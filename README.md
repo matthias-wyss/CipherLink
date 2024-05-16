@@ -44,6 +44,8 @@ Les codes de correction d'erreurs supportés sont :
 - code polar avec annulation succesive
 - code polar avec liste d'annulation succesive
 
+Une option pour rajouter une couche de correction d'erreur avec Reed-Solomon est aussi disponible.
+
 ## Licence
 
 Ce projet est sous licence [MIT](LICENSE).
