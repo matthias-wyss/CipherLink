@@ -4,7 +4,7 @@
 
 CipherLink a été créé dans le cadre d'un projet de la matière "Principle of Digital Communications" donnée en 3ème année aux étudiants de la section Systèmes de Communications à l'EPFL.
 L'objectif était d'encoder un message de 40 caractères provenant d'un alphabet de 64 caractères possibles, de le passer à un canal bruité, puis de le décoder sans erreur, le tout en utilisant le moins d'énergie possible.
-Le code est basé sur les librairies sionna et reedsolo.
+Le code est basé sur les librairies [sionna](https://github.com/NVlabs/sionna) et [reedsolo](https://github.com/tomerfiliba-org/reedsolomon).
 
 ## Installation
 
