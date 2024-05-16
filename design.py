@@ -1,4 +1,5 @@
 import numpy as np
+import json
 import tensorflow as tf
 from sionna.mapping import Constellation, Mapper, Demapper
 from sionna.fec.ldpc import LDPC5GEncoder, LDPC5GDecoder
@@ -60,7 +61,7 @@ def encode_message(message: str, encoding_mode: str = "LDPC", max_energy: float 
     if encoding_mode in ["convolutional", "turbo"]:
         encoder = encoder_class(rate=rate, constraint_length=constraint_length)
     else:
-        encoder = encoder_class(k=len(bits), n=int((1//rate) * len(bits)))
+        encoder = encoder_class(k=len(bits), n=int((1/rate) * len(bits)))
 
     # Encode the bits using the encoder
     encoded_bits_tf = encoder(bits_tf)
@@ -121,7 +122,7 @@ def decode_vectors(useful_noisy_vectors: np.ndarray, encoding_mode: str = "polar
     if encoding_mode in ["convolutional", "turbo"]:
         decoder = decoder_class(rate=rate, constraint_length=constraint_length)
     else:
-        encoder = encoder_class(k=len(useful_noisy_vectors) * rate, n=len(useful_noisy_vectors))
+        encoder = encoder_class(k=int(len(useful_noisy_vectors) * rate), n=len(useful_noisy_vectors))
         if "polar" in encoding_mode:
             decoder = decoder_class(encoder, dec_type="SCL" if "scl" in encoding_mode else "SC")
         else:
@@ -198,15 +199,15 @@ for mode in SUPPORTED_ENCODING_MODES:
 results = {}
 max_energy = 0.45*MAX_ENERGY
 for mode in ["polar-scl"]:
-    for ldpc_factor in [2, 2.5, 3, 3.5, 4, 4.5]:
+    for rate in [1/3, 1/3.5, 1/4, 1/4.5]:
         for num_correction_bytes in range(0, 11):
-            if (240+num_correction_bytes)*ldpc_factor <= 1088:
+            if (240+num_correction_bytes*8)*rate <= 1088:
                 count = 0
                 for _ in range(100):
-                    if generate_encode_decode(use_server=False, encoding_mode=mode, max_energy=max_energy, ldpc_factor=ldpc_factor, num_correction_bytes=num_correction_bytes):
+                    if generate_encode_decode(use_server=False, encoding_mode=mode, max_energy=max_energy, num_correction_bytes=num_correction_bytes, rate=rate):
                         count += 1
-                print(f"factor: {ldpc_factor}, num_correction_bytes: {num_correction_bytes} => count: {count}")
-                results[f"factor: {ldpc_factor}, num_correction_bytes: {num_correction_bytes}"] = count
+                print(f"rate: {rate}, num_correction_bytes: {num_correction_bytes} => count: {count}")
+                results[f"rate: {rate}, num_correction_bytes: {num_correction_bytes}"] = count
 
 with open("results_polar-scl_0.45ENERGY.json", "w") as f:
     json.dump(results, f, indent=4)
