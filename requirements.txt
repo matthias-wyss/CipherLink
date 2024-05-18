@@ -3,5 +3,3 @@ tensorflow-macos >=2.10, <2.16.0 ; sys_platform == "darwin"
 numpy
 sionna
 reedsolo
-random
-subprocess
