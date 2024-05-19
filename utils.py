@@ -205,9 +205,11 @@ def get_noisy_vectors_from_server(vectors):
         if "Last connected < 30s ago. Come back later." in result.stderr:
             raise TimeoutError("Last connected < 30s ago. Come back later.")
         # If vectors energy exceeds the limit, raise ValueError
-        else:
+        elif "Energy of the signal exceeds the limit" in result.stderr:
             energy = compute_energy(vectors)
             raise ValueError(f"Energy of the signal is {energy} and exceeds the limit 40960. Design a more efficient communication system.")
+        else:
+            raise ValueError(result.stderr)
 
     # Read the noisy vectors from the output file
     with open("output.txt", "r") as output_file:
@@ -265,3 +267,25 @@ def scale_vectors(vectors: np.ndarray, max_energy: float) -> np.ndarray:
     
     # Scale the vectors using the scaling factor
     return vectors * scaling_factor
+
+
+def count_errors(message: str, decoded_message: str) -> int:
+    """
+    Counts the number of errors between the original message and the decoded message.
+
+    Args:
+        message (str): The original message.
+        decoded_message (str): The decoded message.
+
+    Returns:
+        int: The number of errors between the two messages.
+    """
+
+    # Calculate the absolute difference in lengths between the two messages
+    count = abs(len(message) - len(decoded_message))
+
+    # Count the number of differing characters at corresponding positions between the two messages
+    count += sum(1 for x, y in zip(message, decoded_message) if x != y)
+
+    # Return the total count of errors
+    return count
