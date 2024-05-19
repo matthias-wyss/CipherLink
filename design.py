@@ -10,7 +10,7 @@ from sionna.fec.polar import Polar5GEncoder, Polar5GDecoder
 import warnings
 warnings.filterwarnings('ignore') # Avoid warnings
 
-from utils import generate_str, message_to_bits, bits_to_message, channel, get_noisy_vectors_from_server, detect_useful_part, scale_vectors, compute_energy
+from utils import generate_str, message_to_bits, bits_to_message, channel, get_noisy_vectors_from_server, detect_useful_part, scale_vectors, compute_energy, count_errors
 
 MAX_ENERGY = 40960 # Maximum energy allowed by the system.
 MAX_DIMENSION = 500000 # Maximum allowed dimension for vectors.
@@ -193,9 +193,13 @@ def generate_encode_decode(use_server: bool = False, encoding_mode: str = "polar
     if verbose:
         print(f"Decoded message: {decoded_message}")
 
-
     # Compare the original message with the decoded message
     result = message == decoded_message
+
+    # Count the number of errors between the original message and the decoded message and print if verbose
+    num_errors = count_errors(message, decoded_message)
+    if verbose:
+        print(f"Number of errors: {num_errors}")
     
     # Print and return the result
     print(result)
