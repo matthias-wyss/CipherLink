@@ -143,13 +143,14 @@ def decode_vectors(useful_noisy_vectors: np.ndarray, encoding_mode: str = "polar
     return decoded_message
 
 
-def generate_encode_decode(use_server: bool = False, encoding_mode: str = "polar-scl", 
-                            max_energy: float = MAX_ENERGY, num_correction_bytes: int = 0, 
-                            rate: float = 1/3, constraint_length: int = 5, verbose: bool = False) -> bool:
+def encode_decode(message: str, use_server: bool = False, encoding_mode: str = "polar-scl", 
+                    max_energy: float = MAX_ENERGY, num_correction_bytes: int = 0, 
+                    rate: float = 1/3, constraint_length: int = 5, verbose: bool = False) -> bool:
     """
-    Generates, encodes, transmits, detects, and decodes a message, and compares the original and decoded messages.
+    Encodes, transmits, detects, and decodes a message, and compares the original and decoded messages.
 
     Args:
+        message (str): The message to transmit
         use_server (bool): Flag indicating whether to use a server for transmitting vectors (default is False).
         encoding_mode (str): The encoding mode to be used (default is "polar-scl").
         max_energy (float): The maximum energy for scaling vectors (default is MAX_ENERGY).
@@ -162,8 +163,7 @@ def generate_encode_decode(use_server: bool = False, encoding_mode: str = "polar
         bool: True if the original and decoded messages match, False otherwise.
     """
 
-    # Generate a random message and print if verbose
-    message = generate_str()
+    # Print the message if verbose
     if verbose:
         print(f"Original message: {message}")
 
@@ -207,4 +207,52 @@ def generate_encode_decode(use_server: bool = False, encoding_mode: str = "polar
     return result
 
 
-generate_encode_decode(use_server=True, max_energy=0.35*MAX_ENERGY, encoding_mode="polar-scl", rate=1/4.5, verbose=True)
+def generate_encode_decode(use_server: bool = False, encoding_mode: str = "polar-scl", 
+                            max_energy: float = MAX_ENERGY, num_correction_bytes: int = 0, 
+                            rate: float = 1/3, constraint_length: int = 5, verbose: bool = False) -> bool:
+    """
+    Generates, encodes, transmits, detects, and decodes a message, and compares the original and decoded messages.
+
+    Args:
+        use_server (bool): Flag indicating whether to use a server for transmitting vectors (default is False).
+        encoding_mode (str): The encoding mode to be used (default is "polar-scl").
+        max_energy (float): The maximum energy for scaling vectors (default is MAX_ENERGY).
+        num_correction_bytes (int): The number of bytes for error correction (default is 0).
+        rate (float): The code rate (default is 1/3).
+        constraint_length (int): The constraint length for convolutional or turbo encoding (default is 5).
+        verbose (bool): Flag indicating whether to print the message, vectors, energy and decoded message (default is False).
+
+    Returns:
+        bool: True if the original and decoded messages match, False otherwise.
+    """
+
+    # Generate a random message
+    message = generate_str()
+    
+    result = encode_decode(message, use_server, encoding_mode, max_energy,
+                           num_correction_bytes, rate, constraint_length, verbose)
+
+    return result
+
+
+def exam_encode_decode(message: str) -> bool:
+    """
+    Encodes, transmits, detects and decodes a message with chosen parameters for the exam presentation.
+
+    Args:
+        message (str): The message to transmit
+
+    Returns:
+        bool: True if the original and decoded messages match, False otherwise.
+    """
+    result = encode_decode(message, use_server=True, encoding_mode="polar-scl",
+                           max_energy=0.4*MAX_ENERGY, num_correction_bytes=0,
+                           rate=1/4.5, verbose=True)
+    return result
+
+
+
+
+
+message = generate_str() # Put the message to transmit here
+exam_encode_decode(message)
