@@ -15,7 +15,7 @@ from utils import generate_str, message_to_bits, bits_to_message, channel, get_n
 MAX_ENERGY = 40960 # Maximum energy allowed by the system.
 MAX_DIMENSION = 500000 # Maximum allowed dimension for vectors.
 SUPPORTED_ENCODING_MODES = ["LDPC", "convolutional", "turbo", "polar-sc", "polar-scl"] # List of supported encoding modes in the system.
-N_O = 25 # Noise power spectral density of the channel.
+NOISE_VAR = 25 # Noise variance of the channel.
 
 # Dictionary mapping encoding modes to encoder classes
 ENCODER_DECODER_CLASSES = {
@@ -109,7 +109,7 @@ def decode_vectors(useful_noisy_vectors: np.ndarray, encoding_mode: str = "polar
     noisy_vectors_tf = tf.expand_dims(noisy_vectors_tf, axis=0)
     
     # Set noise level and define constellation for demapping
-    no = tf.constant(N_O, dtype=tf.float32)
+    no = tf.constant(NOISE_VAR, dtype=tf.float32)
     constellation = Constellation("pam", num_bits_per_symbol=1)
     demapper = Demapper(demapping_method="app", constellation=constellation)
     
