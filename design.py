@@ -137,6 +137,7 @@ def decode_vectors(useful_noisy_vectors: np.ndarray, encoding_mode: str = "polar
     try:
         decoded_message = bits_to_message(decoded_bits, num_correction_bytes)
     except Exception:
+        # If the Reed_solomon decoding failed
         decoded_message = None
     
     return decoded_message

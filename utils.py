@@ -281,6 +281,10 @@ def count_errors(message: str, decoded_message: str) -> int:
         int: The number of errors between the two messages.
     """
 
+    # If the decoded message is None it means that Reed-Solomon decoding failed
+    if decoded_message == None:
+        return 40
+
     # Calculate the absolute difference in lengths between the two messages
     count = abs(len(message) - len(decoded_message))
 
