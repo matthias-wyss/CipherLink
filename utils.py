@@ -85,14 +85,6 @@ def message_to_bits(message: str, correction_bytes: int = 0) -> np.ndarray:
         np.ndarray: An array of binary bits.
     """
     
-    # Check if the message contains valid characters
-    if not is_str_in_alphabet(message):
-        raise ValueError(f"The message {message} contains a non-valid character")
-    
-    # Check if the length of the message matches the expected length
-    if len(message) != MESSAGE_LENGTH:
-        raise ValueError(f"The length of the message is not {MESSAGE_LENGTH}")
-    
     # Encode the message using the alphabet
     encoded_message = ""
     for char in message:
