@@ -1,55 +1,58 @@
-# CipherLink
+# Principle of Digital Communications Project code
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+This code was created as part of a project for the "Principle of Digital Communications" course, taught to third-year students in the Communication Systems section at EPFL. The objective was to encode a 40-character message from an alphabet of 64 possible characters, send it through a noisy channel, and then decode it without errors, all while using the least amount of energy possible.
 
-CipherLink a été créé dans le cadre d'un projet de la matière "Principle of Digital Communications" donnée en 3ème année aux étudiants de la section Systèmes de Communications à l'EPFL.
-L'objectif était d'encoder un message de 40 caractères provenant d'un alphabet de 64 caractères possibles, de le passer à un canal bruité, puis de le décoder sans erreur, le tout en utilisant le moins d'énergie possible.
-Le code est basé sur les librairies [sionna](https://github.com/NVlabs/sionna) et [reedsolo](https://github.com/tomerfiliba-org/reedsolomon).
+Group 6: 
+- Matthias Wyss (SCIPER 329884)
+- Sofia Taouhid (SCIPER 339880)
+- Guillaume Vitalis (SCIPER 339432)
+- Alexandre Huou (SCIPER 342227)
+
+Our code is based on the python libraries [sionna](https://github.com/NVlabs/sionna) and [reedsolo](https://github.com/tomerfiliba-org/reedsolomon).
+
 
 ## Installation
 
-1. Assurez-vous d'avoir Python 3.8 installé sur votre système.
-2. Clonez ce dépôt sur votre machine locale :
+1. Make sure to have Python 3.8 installed on your computer
+2. Create a python's environment:
    ```sh
-   git clone https://github.com/matthias-wyss/CipherLink.git
+   python3.8 -m venv pdc_project_code
    ```
-3. Accédez au répertoire du projet :
-   ```sh
-   cd CipherLink
-   ```
-4. Créez un environnement virtuel :
-   ```sh
-   python3.8 -m venv cipherlink
-   ```
-5. Activez l'environnement virtuel :
-   - Sous Windows :
+3. Activate the environment:
+   - On Windows:
      ```sh
-     cipherlink\Scripts\activate
+     pdc_project_code\Scripts\activate
      ```
-   - Sous macOS/Linux :
+   - On macOS/Linux:
      ```sh
-     source cipherlink/bin/activate
+     source pdc_project_code/bin/activate
      ```
-6. Installez les dépendances à partir du fichier `requirements.txt` :
+4. Install the dependencies (make sure to follow the provided versions requirements (especially for Tensorflow)):
    ```sh
    pip install -r requirements.txt
    ```
+Note: You may also have to install the `llvm` library on your computer.
+   - On macOS:
+      ```sh
+      brew install llvm
+      ```
+   - On Windows:
+      Dowload [llvm](https://releases.llvm.org) and install it.
+      You may also have to modify the variable environment to the corresponding installing path (follow the instructions on the terminal)
+## Usage
+   You can run our code with a randomly generated message with:
+   ```sh
+   python design.py
+   ```
+   You can also define a message directly at the end of the `design.py` file.
 
-## Utilisation
+   By default, when you run `design.py`, you will use our best settings for this particular project. It uses polar codes with a successive cancellation list and a rate of 1/4.5, without the Reed-Solomon layer, with an energy usage of 16384 units.
 
-Les codes de correction d'erreurs supportés sont :
-- LDPC
-- code de convolution
-- code turbo
-- code polar avec annulation succesive
-- code polar avec liste d'annulation succesive
+   But we also implemented the following error correction codes:
+   - Low-Density Parity-Check (LDPC)
+   - Convolutional Codes
+   - Turbo Codes
+   - Polar Codes with successive cancellation decoder (Polar-SC)
+   - Polar Codes with successive cancellation list decoder (Polar-SCL)
 
-Une option pour rajouter une couche de correction d'erreur avec Reed-Solomon est aussi disponible.
-
-## Licence
-
-Ce projet est sous licence [MIT](LICENSE).
-
----
-
-Crée avec ❤️ par Matthias Wyss
+   There is also an option to add a layer of code correction using Reed-Solomon.
