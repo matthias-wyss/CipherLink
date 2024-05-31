@@ -44,7 +44,13 @@ Note: You may also have to install the `llvm` library on your computer.
    ```sh
    python design.py
    ```
-   You can also define a message directly at the end of the `design.py` file.
+   You can also define a message directly by using the command -m or --message:
+   ```sh
+   python design.py -m "This sentence has exactly 40 characters."
+   ```
+   ```sh
+   python design.py --message "My pet rock passed away. Need a new one."
+   ```
 
    By default, when you run `design.py`, you will use our best settings for this particular project. It uses polar codes with a successive cancellation list and a rate of 1/4.5, without the Reed-Solomon layer, with an energy usage of 16384 units.
 
