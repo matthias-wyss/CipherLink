@@ -9,8 +9,11 @@ from sionna.fec.turbo import TurboEncoder, TurboDecoder
 from sionna.fec.polar import Polar5GEncoder, Polar5GDecoder
 import warnings
 warnings.filterwarnings('ignore') # Avoid warnings
+import argparse
 
-from utils import generate_str, message_to_bits, bits_to_message, channel, get_noisy_vectors_from_server, detect_useful_part, scale_vectors, compute_energy, count_errors
+from utils import generate_str, message_to_bits, bits_to_message, channel
+from utils import get_noisy_vectors_from_server, detect_useful_part, scale_vectors
+from utils import compute_energy, count_errors, is_str_in_alphabet, MESSAGE_LENGTH
 
 MAX_ENERGY = 40960 # Maximum energy allowed by the system.
 MAX_DIMENSION = 500000 # Maximum allowed dimension for vectors.
@@ -251,8 +254,29 @@ def exam_encode_decode(message: str) -> bool:
     return result
 
 
+def main():
+    """
+    Parse the input message and call the exam_encode_decode function.
+    The message must be 40 character long and within the ALPHABET.
+    By default the message is random.
+    """
+    parser = argparse.ArgumentParser(description='Encodes some message, passes it through a noisy channel and decodes it.')
+    parser.add_argument('-m', '--message', type=str, default=generate_str(),
+                        help='The message to send must be 40 characters long and within the ALPHABET')
+    args = parser.parse_args()
+    message = args.message
+    
+    # Check if the message contains valid characters and has the correct length.
+    # If not, raise a ValueError with an appropriate message.
+    if not is_str_in_alphabet(message):
+        raise ValueError(f"The message {message} contains invalid characters")
+    if len(message) != MESSAGE_LENGTH:
+        raise ValueError(f"The message length is not {MESSAGE_LENGTH}")
+    
+    # Call the function to process the validated message.
+    exam_encode_decode(message)
 
-
-
-message = generate_str() # Put the message to transmit here
-exam_encode_decode(message)
+    
+if __name__ == "__main__":
+    main()
+    
