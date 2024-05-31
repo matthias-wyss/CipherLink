@@ -1,6 +1,6 @@
 # Principle of Digital Communications Project code
 
-This code was created as part of a project for the "Principle of Digital Communications" course, taught to third-year students in the Communication Systems section at EPFL. The objective was to encode a 40-character message from an alphabet of 64 possible characters, send it through a noisy channel, and then decode it without errors, all while using the least amount of energy possible.
+This code was created as part of a project for the "Principle of Digital Communications" course, taught to third-year students in the Communication Systems section at EPFL. The goal was to encode a 40-character message from an alphabet of 64 possible characters, send it through a noisy channel, and then decode it without errors, all while using the least amount of energy possible.
 
 Group 6: 
 - Matthias Wyss (SCIPER 329884)
